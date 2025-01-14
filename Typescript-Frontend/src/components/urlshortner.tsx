@@ -1,27 +1,29 @@
 import { useState } from 'react';
 
 export default function UrlShortener() {
-  const [url, setUrl] = useState('');
-  const [shortUrl, setShortUrl] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [url, setUrl] = useState<string>('');
+  const [shortUrl, setShortUrl] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    
+
     try {
       const response = await fetch('http://localhost:5001/api/shortUrl', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url })
+        body: JSON.stringify({ fullUrl: url }),
+        mode: 'cors', 
       });
-      
+
       const data = await response.json();
       if (response.ok) {
         setShortUrl(`http://localhost:5001/${data.shortUrl}`);
       } else {
+        console.log("response error: ", data);
         setError(data.error || 'Something went wrong');
       }
     } catch (err) {
@@ -87,4 +89,4 @@ export default function UrlShortener() {
       </div>
     </div>
   );
-}   
+}
