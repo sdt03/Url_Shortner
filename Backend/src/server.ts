@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';   
 import connectDB from './config/dbConfig';
+import shortUrl from './routes/shortUrl';
 dotenv.config();   
 connectDB();
 
@@ -18,6 +19,8 @@ app.use(cors({
 app.get('/', (req, res) => {
   res.send('Hello World!');
 })
+
+app.use('/api/', shortUrl);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
