@@ -12,7 +12,7 @@ export default function UrlShortener() {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:5000/api/shorten', {
+      const response = await fetch('http://localhost:5001/api/shortUrl', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url })
@@ -20,7 +20,7 @@ export default function UrlShortener() {
       
       const data = await response.json();
       if (response.ok) {
-        setShortUrl(`http://localhost:5000/${data.shortUrl}`);
+        setShortUrl(`http://localhost:5001/${data.shortUrl}`);
       } else {
         setError(data.error || 'Something went wrong');
       }
