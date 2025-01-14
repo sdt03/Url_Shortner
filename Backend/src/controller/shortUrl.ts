@@ -8,16 +8,18 @@ export const createUrl =
         const fullUrl = req.body.fullUrl;
         const urlFound = await urlModel.find({ fullUrl });
 
-        if(urlFound.length > 0) {
-            res.status(409)
-            res.send(urlFound);
-        } else {
-            const shortUrl = await urlModel.create({ fullUrl }); 
-            res.status(201).send(shortUrl);
-        }
+        if (urlFound.length > 0) {
+            res.status(409).json({ error: 'URL already exists', data: urlFound });
+          } else {
+            const shortUrl = await urlModel.create({ fullUrl });
+            res.status(201).json(shortUrl);
+          }
+          
     } catch (error) {
-        res.status(500).send({message: "Something went wrong"});
-    }
+        console.error('Error:', error); // Log the error
+        res.status(500).send({ message: "Something went wrong" });
+      }
+      
 };
 
 export const getAllUrl = 
@@ -30,8 +32,10 @@ export const getAllUrl =
                 res.status(200).send(shortUrls);
             }
         } catch (error) {
-            res.status(500).send({message: "Something went wrong"});
-        }
+            console.error('Error:', error); // Log the error
+            res.status(500).send({ message: "Something went wrong" });
+          }
+          
 };
 
 export const getUrl = async (req: express.Request, res: express.Response) => {
@@ -45,8 +49,10 @@ export const getUrl = async (req: express.Request, res: express.Response) => {
             res.redirect(`${shortUrl.fullUrl}`);
         }
     } catch (error) {
-        res.status(500).send({message: "Something went wrong"});
-    }
+        console.error('Error:', error); // Log the error
+        res.status(500).send({ message: "Something went wrong" });
+      }
+      
 }
 
 export const deleteUrl = async (req: express.Request, res: express.Response) => {
@@ -55,7 +61,9 @@ export const deleteUrl = async (req: express.Request, res: express.Response) => 
         if(shortUrl){
             res.status(204).send({message: "Url Deleted"});
         }
-    } catch (error) {
-        res.status(500).send({message: "Something went wrong"});
-    }
+    }catch (error) {
+        console.error('Error:', error); // Log the error
+        res.status(500).send({ message: "Something went wrong" });
+      }
+      
 } 
