@@ -8,7 +8,7 @@ export const createUrl =
         const fullUrl = req.body.fullUrl;
         const urlFound = await urlModel.find({ fullUrl });
 
-        if(urlFound) {
+        if(urlFound.length > 0) {
             res.status(409)
             res.send(urlFound);
         } else {
